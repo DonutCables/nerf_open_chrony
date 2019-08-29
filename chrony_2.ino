@@ -41,10 +41,10 @@ void setup() {
   pinMode(10,OUTPUT);
   // put your setup code here, to run once:
   Serial.begin(1000000);
-  pinMode(2, INPUT);
-  pinMode(3, INPUT);
-  attachInterrupt(0,gate1,RISING);
-  attachInterrupt(1,gate2,RISING);
+  pinMode(g1_pin, INPUT);
+  pinMode(g2_pin, INPUT);
+  attachInterrupt(g1_pin,gate1,RISING);
+  attachInterrupt(g2_pin,gate2,RISING);
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3C for 128x32
     Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
@@ -70,8 +70,8 @@ void loop() {
     display_time = now;
     g1_trip0 = g1_trip;
     g2_trip0 = g2_trip;
-    g1_trip = !digitalRead(2);
-    g2_trip = !digitalRead(3);
+    g1_trip = !digitalRead(g1_pin);
+    g2_trip = !digitalRead(g2_pin);
     
     g1_persist += g1_trip*latch_persist - !g1_trip;
     g1_persist = constrain(g1_persist,0,latch_persist);
@@ -111,9 +111,9 @@ void loop() {
       if (fps<0){
         fpstr = "ERR1";
       }
-      else if (fps>420){
-        fpstr = "ERR2";
-      }
+      //else if (fps>420){
+        //fpstr = "ERR2";
+      //}
       else{
         fpstr = String(int(fps));
         avg_fps = (avg_fps*shot_num+fps)/(shot_num+1);
