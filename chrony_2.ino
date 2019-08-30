@@ -19,13 +19,13 @@ long display_time = 0;
 bool g1_trip = false;
 bool g2_trip = false;
 bool g1_trip0 = false;
-bool  g2_trip0 = false;
+bool g2_trip0 = false;
 bool g1_trip_latch = false;
 bool g2_trip_latch = false;
 int g1_persist = 0;
 int g2_persist = 0;
-int g1_pin = 2;
-int g2_pin = 3; // This is our input pin
+int g1_pin = 19;
+int g2_pin = 18; // This is our input pin
 int latch_persist = 2;
 float gate_dist = 51.0; //distance in millimeters
 float fps = 0;
@@ -43,8 +43,8 @@ void setup() {
   Serial.begin(1000000);
   pinMode(g1_pin, INPUT);
   pinMode(g2_pin, INPUT);
-  attachInterrupt(g1_pin,gate1,RISING);
-  attachInterrupt(g2_pin,gate2,RISING);
+  attachInterrupt(0,gate1,RISING);
+  attachInterrupt(1,gate2,RISING);
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3C for 128x32
     Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
@@ -111,9 +111,9 @@ void loop() {
       if (fps<0){
         fpstr = "ERR1";
       }
-      //else if (fps>420){
+     // else if (fps>420){
         //fpstr = "ERR2";
-      //}
+     //}
       else{
         fpstr = String(int(fps));
         avg_fps = (avg_fps*shot_num+fps)/(shot_num+1);
