@@ -24,8 +24,8 @@ bool g1_trip_latch = false;
 bool g2_trip_latch = false;
 int g1_persist = 0;
 int g2_persist = 0;
-int g1_pin = 19;
-int g2_pin = 18; // This is our input pin
+int g1_pin = 18;
+int g2_pin = 19; // This is our input pin
 int latch_persist = 2;
 float gate_dist = 51.0; //distance in millimeters
 float fps = 0;
@@ -41,8 +41,8 @@ void setup() {
   pinMode(10,OUTPUT);
   // put your setup code here, to run once:
   Serial.begin(1000000);
-  pinMode(g1_pin, INPUT);
-  pinMode(g2_pin, INPUT);
+  pinMode(18, INPUT);
+  pinMode(19, INPUT);
   attachInterrupt(0,gate1,RISING);
   attachInterrupt(1,gate2,RISING);
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3C for 128x32
@@ -70,8 +70,8 @@ void loop() {
     display_time = now;
     g1_trip0 = g1_trip;
     g2_trip0 = g2_trip;
-    g1_trip = !digitalRead(g1_pin);
-    g2_trip = !digitalRead(g2_pin);
+    g1_trip = !digitalRead(18);
+    g2_trip = !digitalRead(19);
     
     g1_persist += g1_trip*latch_persist - !g1_trip;
     g1_persist = constrain(g1_persist,0,latch_persist);
@@ -111,9 +111,9 @@ void loop() {
       if (fps<0){
         fpstr = "ERR1";
       }
-     // else if (fps>420){
-        //fpstr = "ERR2";
-     //}
+      else if (fps>420){
+        fpstr = "ERR2";
+      }
       else{
         fpstr = String(int(fps));
         avg_fps = (avg_fps*shot_num+fps)/(shot_num+1);
