@@ -43,8 +43,8 @@ void setup() {
   Serial.begin(1000000);
   pinMode(g1_pin, INPUT);
   pinMode(g2_pin, INPUT);
-  attachInterrupt(0,gate1,RISING);
-  attachInterrupt(1,gate2,RISING);
+  attachInterrupt(digitalPinToInterrupt(g1_pin),gate1,RISING);
+  attachInterrupt(digitalPinToInterrupt(g2_pin),gate2,RISING);
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3C for 128x32
     Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
@@ -111,7 +111,7 @@ void loop() {
       if (fps<0){
         fpstr = "ERR1";
       }
-      else if (fps>420){
+      else if (fps>42000){
         fpstr = "ERR2";
       }
       else{
